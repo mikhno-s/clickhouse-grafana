@@ -172,16 +172,7 @@ export default class SqlQuery {
         const convertFn = this.getConvertFn(dateTimeType);
 
         if (isToNow) {
-            /* @TODO remove IF when resolve https://github.com/ClickHouse/ClickHouse/issues/16655 */
-            if (dateTimeType === "DATETIME64") {
-                return `${convertFn(columnName)} >= ${convertFn('$from')}`;
-            }
             return `${columnName} >= ${convertFn('$from')}`;
-        }
-
-        /* @TODO remove IF when resolve https://github.com/ClickHouse/ClickHouse/issues/16655 */
-        if (dateTimeType === "DATETIME64") {
-            return `${convertFn(columnName)} >= ${convertFn('$from')} AND ${convertFn(columnName)} <= ${convertFn('$to')}`;
         }
 
         return `${columnName} BETWEEN ${convertFn('$from')} AND ${convertFn('$to')}`;
@@ -496,16 +487,7 @@ export default class SqlQuery {
         };
 
         if (isToNow) {
-            /* @TODO remove IF statement after resolve https://github.com/ClickHouse/ClickHouse/issues/16655 */
-            if (dateTimeType === 'DATETIME64') {
-                return convertFn('$dateTimeCol') + ' >= ' + convertFn('$from');
-            }
             return '$dateTimeCol >= ' + convertFn('$from');
-        }
-        /* @TODO remove IF statement after resolve https://github.com/ClickHouse/ClickHouse/issues/16655 */
-        if (dateTimeType === 'DATETIME64') {
-            return convertFn('$dateTimeCol') + ' >= ' + convertFn('$from') + ' AND ' +
-                   convertFn('$dateTimeCol') + ' <= ' + convertFn('$to');
         }
         return '$dateTimeCol >= ' + convertFn('$from') + ' AND $dateTimeCol <= ' + convertFn('$to');
     }

@@ -80,11 +80,20 @@ FROM (
 GROUP BY d, JobName;
 
 
-DROP TABLE IF EXISTS default.test_datetime64;
-CREATE TABLE IF NOT EXISTS default.test_datetime64
+DROP TABLE IF EXISTS default.test_datetime64_6;
+CREATE TABLE IF NOT EXISTS default.test_datetime64_6
 (
     d DateTime64(6),
     x UInt32
 ) ENGINE = MergeTree() ORDER BY (d);
 
-INSERT INTO default.test_datetime64(d,x) SELECT toDateTime64(now64(6)-(number*10), 3) AS d, rand() AS x FROM numbers(1000);
+INSERT INTO default.test_datetime64_6(d,x) SELECT toDateTime64(now64(6)-(number*10), 3) AS d, rand() AS x FROM numbers(1000);
+
+DROP TABLE IF EXISTS default.test_datetime64_3;
+CREATE TABLE IF NOT EXISTS default.test_datetime64_3
+(
+    d DateTime64(3),
+    x UInt32
+) ENGINE = MergeTree() ORDER BY (d);
+
+INSERT INTO default.test_datetime64_3(d,x) SELECT toDateTime64(now64(6)-(number*10), 3) AS d, rand() AS x FROM numbers(1000);
